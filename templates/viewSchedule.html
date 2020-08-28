@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+
+{% block head %}
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+{% endblock head %}
+
+{% block navbar %}
+    <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Logout</a></li>
+    <li class="nav-item"><a class="nav-link" href="{{ url_for('schedule', id=id) }}">Schedule Events</a></li>
+    <li class="nav-item"><a class="nav-link" href="{{ url_for('enterHours', id=id) }}">Enter Hours</a></li>
+{% endblock navbar %}
+
+{% block body %}
+    <h2>View your schedule</h2>
+    <details>
+    <summary><strong>{{ name }}</strong></summary>
+    <p>Your email: <strong>{{ email }}</strong></p>
+    </details>
+
+    {% if message %}
+    <div class="alert alert-info">{{ message }}</div>
+    {% endif %}
+
+    {% for event in schedule %}
+    <div class="card-columns">
+        <div class="card bg-light mb-3" style="max-width: 18rem;">
+            <div class="card-header">
+                <strong>{{ event['date'] }}</strong>
+            </div>
+            <div class="card-body">
+            <h5 class="card-title">{{ event['title'] }}</h5>
+            <p class="card-text">{{ event['desc'] }}</p>
+                <p id="event_id" name="event_id">{{event['_id']}}</p>
+              From: <strong>{{ event['time_start'] }}</strong>
+              To: <strong>{{ event['time_end'] }}</strong>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+
+{% endblock %}

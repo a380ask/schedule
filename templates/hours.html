@@ -1,0 +1,123 @@
+{% extends "layout.html" %}
+
+{% block head %}
+    <style>
+    #invisible {
+        display: none;
+    }
+    </style>
+{% endblock head %}
+
+{% block navbar %}
+    <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Logout</a></li>
+    <li class="nav-item"><a class="nav-link" href="{{ url_for('schedule', id=id) }}">Schedule Events</a></li>
+    <li class="nav-item"><a class="nav-link" href="{{ url_for('enterHours', id=id) }}">Enter Hours</a></li>
+{% endblock navbar %}
+
+{% block body %}
+    <body onload="calculate();">
+    <h2>Enter your hours</h2>
+    <div id="invisible" class="alert alert-danger">
+        <p id="alert"></p>
+    </div>
+    <details>
+    <summary><strong>{{ name }}</strong></summary>
+    <p>Your email: <strong>{{ email }}</strong></p>
+    </details>
+
+    <form action="{{ url_for('enterHours', id=id) }}" method="POST">
+        <div class="form-group">
+            <label for="hours">Enter hours: </label>
+            <input autofocus required class="form-control" type="number" step="1" min="0" max="24" id="hours" name="hours" placeholder="">
+        </div>
+        <div class="form-group">
+            <label for="min">Enter minutes: </label>
+            <input required class="form-control" type="number" step="15" min="0" max="59" id="min" name="min" placeholder="">
+        </div>
+        <div class="form-group">
+            <label for="date">Enter date: </label>
+            <input required class="form-control" type="date" id="date" name="date">
+        </div>
+        <div class="form-group">
+            <input class="btn btn-primary" type="submit" onclick="TDate();">
+        </div>
+    </form>
+
+    <div class="alert alert-info">Total hours completed: <strong id="total"></strong> hours</div>
+
+    <table class="table table-striped" id="timeTable">
+      <thead>
+        <tr>
+          <th scope="col">Date</th>
+          <th scope="col">Hours</th>
+          <th scope="col">Minutes</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for i in time %}
+        <tr>
+          <th scope="row">{{ i["date"] }}</th>
+          <td>{{ i["hours"] }}</td>
+          <td>{{ i["min"] }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+        <tr>
+          <th scope="row">Total: </th>
+          <td id="totalCol1"></td>
+          <td id="totalCol2"></td>
+        </tr>
+    </table>
+<script>
+    function TDate() {
+        var UserDate = document.getElementById("date").value;
+        var ToDate = new Date();
+
+        if (new Date(UserDate).getTime() > ToDate.getTime()) {
+              event.preventDefault();
+              document.getElementById('invisible').style.display = "block";
+              document.getElementById('alert').innerHTML = "You may not enter a future date.";
+              return false;
+         }
+         else {
+            return true;
+            event.returnValue = true;
+         }
+    }
+    function tableColumnTotal(thisTable,colNumber){
+      var tableElem = document.getElementById(thisTable);
+      var tableBody = document.getElementsByTagName("tbody").item(0);
+      var i;
+      var howManyRows = tableBody.rows.length;
+      result = 0;
+      for(i=0; i<howManyRows; i++){
+        var thisTrElem = tableBody.rows[i];
+        var thisTdElem = thisTrElem.cells[colNumber];
+        var thisTextNode = thisTdElem.childNodes.item(0);
+        if (thisTextNode == null) {
+          thisNumber = 0;
+        }
+        else{
+          var thisNumber = parseFloat(thisTextNode.data);
+        }
+        result += thisNumber;
+      }
+      return result;
+    }
+    function calculate() {
+        totalCol_hrs = tableColumnTotal("timeTable", 1);
+        totalCol_min = tableColumnTotal("timeTable", 2);
+        var totalColumn1Elem = window.document.getElementById("totalCol1");
+        totalColumn1Elem.innerHTML = totalCol_hrs;
+        var totalColumn2Elem = window.document.getElementById("totalCol2");
+        totalColumn2Elem.innerHTML = totalCol_min;
+        if (totalCol_min >= 60) {
+            var extrahrs = totalCol_min/60;
+            var total = totalCol_hrs + extrahrs;
+            document.getElementById('total').innerHTML = total;
+        }
+        return;
+    }
+</script>
+    </body>
+{% endblock %}

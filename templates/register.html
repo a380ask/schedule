@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+<h2>Register</h2>
+<form action="{{ url_for('register') }}" method="POST">
+    <div class="form-group">
+        <label for="name">Name: </label>
+        <input autofocus class="form-control" type="text" id="name" name="name" placeholder="Tommy">
+    </div>
+    <div class="form-group">
+        <label for="email">Email: </label>
+        <input class="form-control" id="email" name="email" type="email" placeholder="tommy@example.com">
+    </div>
+    <div class="form-group">
+        <label for="password">Password: </label>
+        <input class="form-control" id="password" name="password" type="password">
+    </div>
+    <div class="form-group">
+        <label for="confirm">Confirm Password: </label>
+        <input class="form-control" id="confirm" name="confirm" type="password">
+    </div>
+    <div class="form-group">
+        <input class="btn btn-primary" type="submit">
+    </div>
+</form>
+{% endblock %}
