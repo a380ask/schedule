@@ -21,11 +21,11 @@ try:
 except:
     print("Cannot connect")
 
-@app.route("/")
-def index():
-    return "Scheduling assistant"
+# @app.route("/")
+# def index():
+#     return "Scheduling assistant"
 
-@app.route("/login", methods=["GET", "POST"])
+@app.route("/", methods=["GET", "POST"])
 def login():
     if request.method == 'GET':
         return render_template("login.html")

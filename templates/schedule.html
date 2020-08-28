@@ -11,6 +11,7 @@
 {% block navbar %}
     <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Logout</a></li>
     <li class="nav-item"><a class="nav-link" href="{{ url_for('schedule', id=id) }}">Schedule Events</a></li>
+    <li class="nav-item"><a class="nav-link" href="{{ url_for('viewSchedule', id=id) }}">View Events</a></li>
     <li class="nav-item"><a class="nav-link" href="{{ url_for('enterHours', id=id) }}">Enter Hours</a></li>
 {% endblock navbar%}
 
