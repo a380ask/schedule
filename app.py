@@ -1,6 +1,9 @@
 from flask import Flask, render_template, request, redirect, session, url_for
 from flask_pymongo import PyMongo
+import os
+from dotenv import load_dotenv, find_dotenv
 
+load_dotenv(find_dotenv())
 
 app = Flask(__name__)
 app.url_map.strict_slashes = False
@@ -8,14 +11,7 @@ app.debug = True
 app.secret_key = "jai"
 
 try:
-    username = "schedule"
-    password = "kbqpaghOoNzHWQhO"
-    dbname = "schedule"
-    app.config[
-        "MONGO_URI"] = "mongodb://schedule:kbqpaghOoNzHWQhO@cluster0-shard-00-00-n27aa.mongodb.net:27017," \
-                       "cluster0-shard-00-01-n27aa.mongodb.net:27017," \
-                       "cluster0-shard-00-02-n27aa.mongodb.net:27017/schedule?ssl=true&replicaSet=Cluster0-shard-0" \
-                       "&authSource=admin&retryWrites=true&w=majority"
+    app.config["MONGO_URI"] = os.environ.get("DBURI")
     mongo = PyMongo(app)
     print("connected!")
 except:
