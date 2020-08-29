@@ -3,7 +3,7 @@ from flask_pymongo import PyMongo
 import os
 from dotenv import load_dotenv, find_dotenv
 
-# load_dotenv(find_dotenv())
+load_dotenv(find_dotenv())
 
 app = Flask(__name__)
 app.url_map.strict_slashes = False
